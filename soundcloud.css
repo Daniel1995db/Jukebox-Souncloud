@@ -1,0 +1,44 @@
+h1{
+	text-align: center;
+}
+#myJukebox{
+	width: 600px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;
+	border-style: solid;
+	border-color: black;
+	border-radius: 15px;
+	background-image: -webkit-linear-gradient(#999999, #f2f2f2);
+}
+.songTitle{
+	height: 80px;
+	font-size: 30px;
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	border-style: solid;
+	border-color: black;
+	background-image: -webkit-linear-gradient(#1a75ff, #e6f0ff);
+	border-radius: 10px;
+}
+.myJukebox #controls{
+	font-size: 2.5em;
+	padding: 5px;
+}
+#myJukebox #controls .fa{
+	padding-left: 15px;
+	padding-right: 15px;
+	transition: color 0.3s;
+	cursor: pointer;
+}
+#myJukebox #controls .fa:hover{
+	color: #1a75ff;
+}
+img{
+	display: inline-block;
+	height: 150px;
+	padding-top: 10px;
+}
