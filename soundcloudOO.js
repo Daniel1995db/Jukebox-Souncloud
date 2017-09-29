@@ -1,3 +1,5 @@
+
+
 SC.initialize({
  client_id: 'fd4e76fc67798bfa742089ed619084a6'
 });
@@ -13,10 +15,10 @@ let songTitle
   , pause
   , forward
   , myJukebox
-  // , artistName
-  // , genre
-  // , release
-  // , description
+  , artistName
+  , genre
+  , trackDuration
+  , release
   , playlist
   ;
 
@@ -27,9 +29,10 @@ let songTitle
 	  play = controls.querySelector(".fa.fa-play");
 	  pause = controls.querySelector(".fa.fa-pause");
 	  forward = controls.querySelector(".fa.fa-forward");
-	  // artistName = document.querySelector(".artistName");
-	  // genre = document.querySelector(".genre");
-	  // description = document.querySelector(".description");
+	  artistName = document.querySelector(".artistName");
+	  genre = document.querySelector(".genre");
+	  trackDuration = document.querySelector(".trackDuration");
+	  release = document.querySelector(".release")
 	  playlist = document.querySelector(".playlist");
 	  myJukebox = new Jukebox('https://api.soundcloud.com/playlists/232207406?client_id=fd4e76fc67798bfa742089ed619084a6');
 });
@@ -72,13 +75,18 @@ Jukebox.prototype.loadPlaylist = function(apiKey){
 }
 
 Jukebox.prototype.play =function(){
-	console.log(this.songs, this.songs[this.currentSong]);
+	// console.log(this.songs, this.songs[this.currentSong]);
 	if( this.songs[this.currentSong].player ) {
 		this.songs[this.currentSong].player.play();
 	} else {
 		SC.stream(`/tracks/${this.songs[this.currentSong].id}`).then((response) => {
 		  this.songs[this.currentSong].player = response;
 		  response.play();
+		  player.on("finish", function(){
+				console.log(finish);
+				currentSong += 1;
+				stream();
+			});
 		});
 	}
 }
@@ -91,28 +99,37 @@ Jukebox.prototype.pause = function(){
 }
 Jukebox.prototype.forward = function(){
 	this.pause();
-	this.songs[this.currentSong] = (this.currentSong + 1) % this.songs.length;
+	this.currentSong = (this.currentSong + 1) % this.songs.length;
 	this.play();
 }
 Jukebox.prototype.backward = function(){
 	this.pause();
-	this.songs[this.currentSong] = (this.currentSong - 1) % this.songs.length;
-	 if (this.currentSong == -1){
-	  	this.currentSong = this.songs.length - 1;
-	 }
+	this.currentSong = (this.currentSong - 1) % this.songs.length;
+	if (this.currentSong == -1){
+		this.currentSong = this.songs.length - 1;
+	}	
 	this.play();
 }
 
 Jukebox.prototype.updateText = function(){
-	console.log(this)
+	// console.log(this)
 	songTitle.innerText = this.songs[this.currentSong].title;
+	artistName.innerText = this.songs[this.currentSong].user.username;
+	genre.innerText = this.songs[this.currentSong].genre;
+	trackDuration.innerText = convertDuration(this.songs[this.currentSong].duration);
+	release.innerText = (new Date(this.songs[this.currentSong].created_at)).toLocaleDateString();
 }
 
-
-
-
-
-
+// function convertDuration(duration){
+// 	let seconds = parseInt(duration/ 1000);
+// 	return parseInt(seconds/60) + ":" + ("0+seconds%60").slice(-2);
+// }
+function convertDuration(ms) {
+	hours = Math.
+    minutes = Math.floor((ms % 3600000) / 60000), // 1 Minutes = 60000 Milliseconds
+    seconds = Math.floor(((ms % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+    return minutes + ":" + ("0"+seconds%60).slice(-2);
+}
 
 
 
